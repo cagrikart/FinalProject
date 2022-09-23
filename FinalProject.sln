@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\Cons
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database1", "C:\Users\ckart\source\repos\Database1\Database1.sqlproj", "{70AB3E04-B05D-453A-BB95-46E553B4DB1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{577CEDB6-BB0B-45B4-9EE9-2B76C42573C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{70AB3E04-B05D-453A-BB95-46E553B4DB1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70AB3E04-B05D-453A-BB95-46E553B4DB1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70AB3E04-B05D-453A-BB95-46E553B4DB1E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{577CEDB6-BB0B-45B4-9EE9-2B76C42573C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{577CEDB6-BB0B-45B4-9EE9-2B76C42573C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{577CEDB6-BB0B-45B4-9EE9-2B76C42573C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{577CEDB6-BB0B-45B4-9EE9-2B76C42573C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

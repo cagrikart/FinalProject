@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +21,48 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        public List<Product> GetAll()
+      
+
+        public IDataResult<List<Product>> GetAll()
         {
-            return _productDal.GetAll();
+            if (DateTime.Now.Hour ==22 )
+            {
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+            }
+            return new SuccesDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
         }
 
-        public List<Product> GetAllByCategoryId(int categoryId)
+        public IDataResult<List<Product>> GetAllByCategoryId(int categoryId)
         {
-            return _productDal.GetAll(p => p.CategoryID == categoryId);
+            return new SuccesDataResult<List<Product>>
+                (_productDal.GetAll(p => p.CategoryID == categoryId), Messages.CategoryListed);
         }
 
-        public List<Product> GetByUnitPrice(decimal min, decimal max)
+        public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
         {
-            return _productDal.GetAll(p => p.UnitPrice > min && p.UnitPrice < max );
+            return new SuccesDataResult<List<Product>> 
+                (_productDal.GetAll(p => p.UnitPrice > min && p.UnitPrice < max), "Listelendi");
+        }
+
+        public IDataResult<List<ProductDetailDTO>> GetProductDetails()
+        {
+            return 
+                new SuccesDataResult<List<ProductDetailDTO>>(_productDal.GetProductDetails());
+        }
+
+        public IResult Add(Product product)
+        {
+            if(product.ProductName.Length<2 )
+            {
+                return new ErrorResult(Messages.ProductNameInvalid);
+            }
+            _productDal.Add(product);
+            return new SuccessResult("Ürün eklendi");
+        }
+
+        public IDataResult <Product> GetProductId(int productId)
+        {
+            return new SuccesDataResult<Product>(_productDal.Get(p => p.ProductID == productId), "id göre listledi ");
         }
     }
 }
