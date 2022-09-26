@@ -1,11 +1,16 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,15 +26,15 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-      
+
 
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour ==22 )
+            if (DateTime.Now.Hour == 22)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
-            return new SuccesDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
+            return new SuccesDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int categoryId)
@@ -40,27 +45,27 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
         {
-            return new SuccesDataResult<List<Product>> 
+            return new SuccesDataResult<List<Product>>
                 (_productDal.GetAll(p => p.UnitPrice > min && p.UnitPrice < max), "Listelendi");
         }
 
         public IDataResult<List<ProductDetailDTO>> GetProductDetails()
         {
-            return 
+            return
                 new SuccesDataResult<List<ProductDetailDTO>>(_productDal.GetProductDetails());
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            if(product.ProductName.Length<2 )
-            {
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+            //ValidationTool.Validate(new ProductValidator(), product);
+
+
             _productDal.Add(product);
             return new SuccessResult("Ürün eklendi");
         }
 
-        public IDataResult <Product> GetProductId(int productId)
+        public IDataResult<Product> GetProductId(int productId)
         {
             return new SuccesDataResult<Product>(_productDal.Get(p => p.ProductID == productId), "id göre listledi ");
         }
