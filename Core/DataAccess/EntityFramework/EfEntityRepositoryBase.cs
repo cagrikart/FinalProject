@@ -1,11 +1,10 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework
 {
@@ -13,53 +12,54 @@ namespace Core.DataAccess.EntityFramework
         where TEntity : class, IEntity, new()
         where TContext : DbContext, new()
     {
+
+
         public void Add(TEntity entity)
         {
-            //IDisposable pattern implementation of c#
-            using (TContext northwindContext = new TContext())
+            using (TContext context = new TContext())
             {
-                var addEntity = northwindContext.Entry(entity);
-                addEntity.State = EntityState.Added;
-                northwindContext.SaveChanges();
+                var addedEntity = context.Entry(entity);
+                addedEntity.State = EntityState.Added;
+                context.SaveChanges();
             }
         }
 
         public void Delete(TEntity entity)
         {
-            using (TContext northwindContext = new TContext())
+
+            using (TContext context = new TContext())
             {
-                var deleteEntity = northwindContext.Entry(entity);
-                deleteEntity.State = EntityState.Deleted;
-                northwindContext.SaveChanges();
+                var deletedEntity = context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
+                context.SaveChanges();
             }
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
-            using (TContext northwindContext = new TContext())
+            using (TContext context = new TContext())
             {
-                return northwindContext.Set<TEntity>().SingleOrDefault(filter);
+                return context.Set<TEntity>().SingleOrDefault(filter);
             }
         }
 
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            using (TContext northwindContext = new TContext())
+            using (TContext context = new TContext())
             {
                 return filter == null
-                    ? northwindContext.Set<TEntity>().ToList()
-                    : northwindContext.Set<TEntity>().Where(filter).ToList();
+                    ? context.Set<TEntity>().ToList()
+                    : context.Set<TEntity>().Where(filter).ToList();
             }
-
         }
 
         public void Update(TEntity entity)
         {
-            using (TContext northwindContext = new TContext())
+            using (TContext context = new TContext())
             {
-                var updatedEntity = northwindContext.Entry(entity);
+                var updatedEntity = context.Entry(entity);
                 updatedEntity.State = EntityState.Modified;
-                northwindContext.SaveChanges();
+                context.SaveChanges();
             }
         }
     }

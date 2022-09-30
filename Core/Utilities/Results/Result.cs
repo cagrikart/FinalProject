@@ -8,11 +8,12 @@ namespace Core.Utilities.Results
 {
     public class Result : IResult
     {
-        
 
-        public Result(bool success, string messeage):this(success)
+
+        public Result(bool success, string message) : this(success)
         {
-            Message= messeage;
+            Message = message;
+
         }
 
         public Result(bool success)
@@ -20,11 +21,8 @@ namespace Core.Utilities.Results
             Success = success;
         }
 
-        bool Success { get; }
+        public bool Success { get; }
 
-        string Message { get; }
-
-        bool IResult.Success => throw new NotImplementedException();
-        string IResult.Message => throw new NotImplementedException();
+        public string Message { get; }
     }
 }

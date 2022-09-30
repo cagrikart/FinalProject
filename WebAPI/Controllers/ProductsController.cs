@@ -22,22 +22,34 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _productService.GetAll();
-                return Ok(result.Data);
-            
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
-        [HttpPost]
-        public IActionResult Post(Product  product)
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
+        {
+            var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpPost("add")]
+        public IActionResult Add(Product product)
         {
             var result = _productService.Add(product);
-            return Ok(result);
-        }
-        [HttpGet("getbyid")]
-        public IActionResult GetByid(int productid)
-        {
-            var result = _productService.GetProductId(productid);
-            return Ok(result.Data);
-
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }
